@@ -16,7 +16,7 @@ const Router = () => {
       <Route element={<ProtectedRoutes />}>
         <Route path="/ques" element={<Ques />} />
         <Route path="/interview/:interviewId" element={<Interview />} />
-        <Route path="/result/:interviewId" element={<Result />} />
+        <Route path="/result" element={<Result />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
