@@ -11,7 +11,7 @@ export const logoutUser = () => {
   return API.post("/user/logout");
 };
 export const getCurrentUser = (token) => {
-     console.log("Token:", token);
+    
   return API.get("/user/is_auth", {
     headers: {
       Authorization: `Bearer ${token}`,

@@ -73,7 +73,7 @@ function Ques() {
 
   const handleStart = async (project) => {
     try {
-      console.log("Token exists:", !!token);
+      
 
       if (!token) {
         throw new Error("Token missing. Please login again.");
