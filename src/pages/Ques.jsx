@@ -14,7 +14,7 @@ import {
   Sparkles,
 } from "lucide-react";
 
-import { startInterview } from "../services/authservices";
+import { logoutUser, startInterview } from "../services/authservices";
 import { useAuth } from "../context/MyContext";
 
 const projects = [
@@ -57,15 +57,16 @@ function Ques() {
   const { token } = useAuth();
   const navigate = useNavigate();
 
-  const Logout = () => {
-    prompt("You wanna go back just type yes")
-    if (prompt === "yes") {
-    navigate(-1)
-    }
-    else{
-      alert("You dont wannt to leave lets play")
-    }
+  const Logout= async () => {
+  try {
+    await logoutUser();
+
+    localStorage.removeItem("token");
+    navigate("/");
+  } catch (error) {
+    console.log(error);
   }
+};
 
   const [loadingProject, setLoadingProject] = useState(null);
   const [error, setError] = useState("");

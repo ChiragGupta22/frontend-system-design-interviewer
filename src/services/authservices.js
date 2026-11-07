@@ -7,7 +7,9 @@ export const registerUser = (data) => {
 export const loginUser = (data) => {
   return API.post("/user/login", data);
 };
-
+export const logoutUser = () => {
+  return API.post("/user/logout");
+};
 export const getCurrentUser = (token) => {
      console.log("Token:", token);
   return API.get("/user/is_auth", {
