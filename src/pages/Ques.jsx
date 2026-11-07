@@ -125,7 +125,7 @@ function Ques() {
           </div>
 
           <div className="flex items-center gap-5">
-            <button  onClick={() => navigate("/result")} className="hidden text-sm text-slate-400 transition hover:text-white sm:block">
+            <button  className="hidden text-sm text-slate-400 transition hover:text-white sm:block">
               Dashboard
             </button>
 
