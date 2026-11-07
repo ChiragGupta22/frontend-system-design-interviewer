@@ -21,7 +21,7 @@ const Result = () => {
   const navigate = useNavigate();
   const { interviewId } = useParams();
 
-  const { token, user } = useAuth();
+  const { token } = useAuth();
 
   const [scores, setScores] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -29,14 +29,14 @@ const Result = () => {
 
   useEffect(() => {
     const fetchScores = async () => {
-      if (!token) {
-        setError("Please login first.");
+      if (!token || !interviewId) {
+        setError("Interview information is missing.");
         setLoading(false);
         return;
       }
 
       try {
-        const res = await getScores(token);
+        const res = await getScores(token, interviewId);
         setScores(res.data);
       } catch (err) {
         console.error("Fetch scores error:", err);
@@ -51,7 +51,7 @@ const Result = () => {
     };
 
     fetchScores();
-  }, [token]);
+  }, [token, interviewId]);
 
   const totalMarks = scores.reduce(
     (total, item) => total + (Number(item.marks) || 0),
@@ -123,15 +123,11 @@ const Result = () => {
           <Trophy className="mx-auto mb-5 h-16 w-16 text-yellow-400" />
 
           <h2 className="text-3xl font-bold sm:text-4xl">
-            {user?.role === "admin"
-              ? "All Members Results"
-              : "My Interview Results"}
+            Interview Completed!
           </h2>
 
           <p className="mt-3 text-slate-400">
-            {user?.role === "admin"
-              ? "Check the performance of all members."
-              : "Here is your system design interview performance."}
+            Here is your system design interview performance.
           </p>
         </div>
 
@@ -213,29 +209,21 @@ const Result = () => {
 
         <section className="rounded-2xl border border-white/10 bg-[#111124] p-7">
           <h3 className="mb-6 text-xl font-bold">
-            {user?.role === "admin"
-              ? "All Members Question-wise Results"
-              : "Question-wise Results"}
+            Question-wise Results
           </h3>
 
           {scores.length === 0 ? (
             <p className="py-8 text-center text-slate-400">
-              No submitted answers found.
+              No submitted answers found for this interview.
             </p>
           ) : (
             <div className="space-y-4">
               {scores.map((item, index) => (
                 <div
-                  key={`${item.user_id}-${item.question_id}-${index}`}
+                  key={item.question_id}
                   className="flex items-center justify-between rounded-xl border border-white/10 bg-[#080817] p-5"
                 >
                   <div>
-                    {user?.role === "admin" && (
-                      <p className="mb-1 text-sm text-violet-400">
-                        Member ID: {item.user_id}
-                      </p>
-                    )}
-
                     <p className="font-semibold">
                       Question {index + 1}
                     </p>
