@@ -14,7 +14,7 @@ import {
   Sparkles,
 } from "lucide-react";
 
-import { logoutUser, startInterview } from "../services/authservices";
+import {  startInterview } from "../services/authservices";
 import { useAuth } from "../context/MyContext";
 
 const projects = [
@@ -125,7 +125,7 @@ function Ques() {
           </div>
 
           <div className="flex items-center gap-5">
-            <button className="hidden text-sm text-slate-400 transition hover:text-white sm:block">
+            <button  onClick={() => navigate("/result")} className="hidden text-sm text-slate-400 transition hover:text-white sm:block">
               Dashboard
             </button>
 
