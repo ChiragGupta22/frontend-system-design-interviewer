@@ -54,14 +54,14 @@ const projects = [
 ];
 
 function Ques() {
-  const { token } = useAuth();
+  const { token,logout } = useAuth();
   const navigate = useNavigate();
 
+
+  
   const Logout= async () => {
   try {
-    await logoutUser();
-
-    localStorage.removeItem("token");
+   await logout();
     navigate("/");
   } catch (error) {
     console.log(error);
