@@ -17,6 +17,7 @@ const Router = () => {
         <Route path="/ques" element={<Ques />} />
         <Route path="/interview/:interviewId" element={<Interview />} />
         <Route path="/result" element={<Result />} />
+        <Route path="/result/:interviewId" element={<Result />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
