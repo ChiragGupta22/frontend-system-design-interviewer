@@ -17,11 +17,6 @@ export const getCurrentUser = (token) => {
   });
 };
 
-
-export const logoutUser = () => {
-  return API.post("/user/logout");
-};
-
 export const startInterview = (data, token) => {
   return API.post("/ai/create", data, {
     headers: {

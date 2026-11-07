@@ -58,15 +58,14 @@ function Ques() {
   const navigate = useNavigate();
 
   const Logout = () => {
-  const confirmLogout = prompt("You wanna go back? Just type yes");
-
-  if (confirmLogout?.toLowerCase() === "yes") {
-    localStorage.removeItem("token");
-    navigate("/");
-  } else {
-    alert("You don't want to leave? Let's play!");
+    prompt("You wanna go back just type yes")
+    if (prompt === "yes") {
+    navigate(-1)
+    }
+    else{
+      alert("You dont wannt to leave lets play")
+    }
   }
-};
 
   const [loadingProject, setLoadingProject] = useState(null);
   const [error, setError] = useState("");
