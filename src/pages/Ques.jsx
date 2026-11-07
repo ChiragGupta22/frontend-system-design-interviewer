@@ -64,7 +64,7 @@ function Ques() {
   const Logout = () => {
     prompt("You wanna go back just type yes")
     if (prompt === "yes") {
-    navigate(-1)
+    navigate("/")
     }
     else{
       alert("You dont wannt to leave lets play")
