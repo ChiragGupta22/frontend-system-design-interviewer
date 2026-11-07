@@ -57,10 +57,6 @@ function Ques() {
   const { token } = useAuth();
   const navigate = useNavigate();
 
-  const Result = () => {
-    navigate(`/result/${interviewId}`)
-  }
-
   const Logout = () => {
   const confirmLogout = prompt("You wanna go back? Just type yes");
 
@@ -129,7 +125,7 @@ function Ques() {
           </div>
 
           <div className="flex items-center gap-5">
-            <button onClick={Result} className="hidden text-sm text-slate-400 transition hover:text-white sm:block">
+            <button className="hidden text-sm text-slate-400 transition hover:text-white sm:block">
               Dashboard
             </button>
 
