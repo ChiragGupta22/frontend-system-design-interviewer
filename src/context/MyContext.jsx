@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from "react";
+
+import { createContext, useContext, useState, useEffect } from "react";
 import {
   registerUser,
   loginUser,
@@ -9,8 +10,35 @@ export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(false);
+
+  const [token, setToken] = useState(() =>
+    localStorage.getItem("token")
+  );
+
+  const [loading, setLoading] = useState(true);
+
+  // Check user when app loads or refreshes
+  useEffect(() => {
+    const checkAuth = async () => {
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await getCurrentUser(token);
+        setUser(response.data);
+      } catch (error) {
+        localStorage.removeItem("token");
+        setToken(null);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuth();
+  }, [token]);
 
   const register = async (data) => {
     setLoading(true);
@@ -31,6 +59,7 @@ const AuthProvider = ({ children }) => {
 
       const accessToken = response.data.token;
 
+      localStorage.setItem("token", accessToken);
       setToken(accessToken);
 
       const userResponse = await getCurrentUser(accessToken);
@@ -39,6 +68,7 @@ const AuthProvider = ({ children }) => {
 
       return userResponse.data;
     } catch (error) {
+      localStorage.removeItem("token");
       setToken(null);
       setUser(null);
       throw error;
@@ -48,6 +78,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
+    localStorage.removeItem("token");
     setToken(null);
     setUser(null);
   };
