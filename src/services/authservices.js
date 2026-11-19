@@ -52,3 +52,36 @@ export const getScores = (token, interviewId) => {
     },
   });
 };
+
+
+export const getAllUsers = (token) => {
+  return API.get("/admin/users", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const getUserById = (userId, token) => {
+  return API.get(`/admin/users/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const getAllUsersMarks = (token) => {
+  return API.get("/admin/marks", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const getUserMarks = (userId, token) => {
+  return API.get(`/admin/marks/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};

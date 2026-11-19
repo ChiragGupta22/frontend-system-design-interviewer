@@ -1,54 +1,29 @@
-
-import { useState } from "react";
-import {
-  BrainCircuit,
-  Mail,
-  LockKeyhole,
-  Eye,
-  ArrowRight,
-} from "lucide-react";
-import { Link, useNavigate } from "react-router";
-import { useAuth } from "../context/MyContext";
+import { BrainCircuit, Mail, LockKeyhole, Eye, ArrowRight } from "lucide-react";
+import { Link } from "react-router";
+import useAuthForm from "../hooks/authHooks";
 
 
 const Login = () => {
-  const { login, loading } = useAuth();
-  const navigate = useNavigate();
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-
-    try {
-      await login({
-        email,
-        password,
-      });
-
-      navigate("/ques");
-    } catch (error) {
-      setError(
-        error.response?.data?.detail || "Invalid email or password"
-      );
-    }
-  };
+  const {
+    register,
+    handleSubmit,
+    onSubmit,
+    errors,
+    error,
+    loading,
+    showPassword,
+    setShowPassword,
+  } = useAuthForm("login");
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#080817] text-white">
-
       {/* Background Glow */}
       <div className="absolute -left-32 -top-40 h-96 w-96 rounded-full bg-violet-700/20 blur-[100px]" />
       <div className="absolute -bottom-40 -right-20 h-96 w-96 rounded-full bg-indigo-600/20 blur-[100px]" />
 
       <div className="relative mx-auto grid min-h-screen max-w-375 grid-cols-1 items-center gap-12 px-6 py-10 md:px-12 lg:grid-cols-2 lg:gap-16 lg:px-16">
-
         {/* Left Section */}
         <section className="flex flex-col justify-center">
-
           <Link to="/" className="mb-12 flex w-fit items-center gap-3">
             <BrainCircuit className="h-10 w-10 text-violet-400" />
             <span className="text-2xl font-bold tracking-tight">
@@ -65,16 +40,14 @@ const Login = () => {
           </h1>
 
           <p className="mt-6 max-w-md text-lg leading-8 text-slate-300">
-            Continue your journey. Practice system design and become interview-ready.
+            Continue your journey. Practice system design and become
+            interview-ready.
           </p>
-
         </section>
 
         {/* Right Section */}
         <section className="mx-auto w-full max-w-xl">
-
           <div className="rounded-3xl border border-violet-400/20 bg-white/4 p-6 shadow-2xl shadow-black/30 backdrop-blur-xl sm:p-10">
-
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
               Welcome Back
             </h2>
@@ -84,11 +57,7 @@ const Login = () => {
             </p>
 
             {/* Login Form */}
-            <form
-              onSubmit={handleSubmit}
-              className="mt-8 space-y-6"
-            >
-
+            <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-6">
               {/* Email */}
               <div>
                 <label className="mb-2 block text-sm font-semibold text-slate-100">
@@ -96,57 +65,59 @@ const Login = () => {
                 </label>
 
                 <div className="flex items-center gap-3 rounded-xl border border-violet-300/20 bg-black/20 px-4 transition focus-within:border-violet-400 focus-within:ring-2 focus-within:ring-violet-500/20">
-
                   <Mail className="h-5 w-5 shrink-0 text-slate-400" />
 
                   <input
                     type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    {...register("email", {
+                      required: "email is required",
+                    })}
                     placeholder="Enter your email"
                     required
                     className="min-w-0 flex-1 bg-transparent py-4 text-sm text-white outline-none placeholder:text-slate-500"
                   />
-
+                  {errors.email && (
+                    <p className="text-red-500">{errors.email.message}</p>
+                  )}
                 </div>
               </div>
 
               {/* Password */}
+
               <div>
                 <div className="mb-2 flex items-center justify-between">
-
                   <label className="block text-sm font-semibold text-slate-100">
                     Password
                   </label>
-
-                  <a
-                    href="#"
-                    className="text-xs font-medium text-violet-400 transition hover:text-violet-300"
-                  >
-                    Forgot Password?
-                  </a>
-
                 </div>
 
                 <div className="flex items-center gap-3 rounded-xl border border-violet-300/20 bg-black/20 px-4 transition focus-within:border-violet-400 focus-within:ring-2 focus-within:ring-violet-500/20">
-
                   <LockKeyhole className="h-5 w-5 shrink-0 text-slate-400" />
 
                   <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    type={showPassword ? "text" : "password"}
+                    {...register("password", {
+                      required: "Password is required",
+                      minLength: {
+                        value: 8,
+                        message: "minimum 8 characters are required",
+                      },
+                    })}
                     placeholder="Enter your password"
                     required
                     className="min-w-0 flex-1 bg-transparent py-4 text-sm text-white outline-none placeholder:text-slate-500"
                   />
 
-                  <Eye className="h-5 w-5 shrink-0 text-slate-400" />
-
+                  <Eye
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="h-5 w-5 shrink-0 text-slate-400"
+                  />
+                  {errors.password && (
+                    <p className="text-red-500">{errors.password.message}</p>
+                  )}
                 </div>
               </div>
 
-              
               <div>
                 <label className="flex items-center gap-2 text-sm text-slate-300">
                   <input
@@ -157,14 +128,8 @@ const Login = () => {
                 </label>
               </div>
 
-             
-              {error && (
-                <p className="text-sm text-red-400">
-                  {error}
-                </p>
-              )}
+              {error && <p className="text-sm text-red-400">{error}</p>}
 
-             
               <button
                 type="submit"
                 disabled={loading}
@@ -174,10 +139,8 @@ const Login = () => {
 
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
               </button>
-
             </form>
 
-            
             <div className="my-7 flex items-center gap-4">
               <div className="h-px flex-1 bg-white/10" />
               <span className="text-sm text-slate-400">OR</span>
@@ -193,13 +156,11 @@ const Login = () => {
                 Create Account
               </Link>
             </p>
-
           </div>
 
           <p className="mt-5 text-center text-xs text-slate-500">
             Practice smarter. Design better. Get interview-ready.
           </p>
-
         </section>
       </div>
     </main>

@@ -5,7 +5,7 @@ import {
   Send,
   Lightbulb,
   MessageSquare,
-  CheckCircle2,
+
   Loader2,
 } from "lucide-react";
 
