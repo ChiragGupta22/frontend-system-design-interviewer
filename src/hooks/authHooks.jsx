@@ -3,9 +3,8 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useAuth } from "../context/MyContext";
 
-
 const useAuthForm = (type = "login") => {
-  const { login, register: signup, loading,user } = useAuth();
+  const { login, register: signup, loading, user } = useAuth();
   const navigate = useNavigate();
 
   const [error, setError] = useState("");
@@ -42,12 +41,12 @@ const useAuthForm = (type = "login") => {
 
         setTimeout(() => navigate("/"), 1000);
       } else {
-        await login({
+        const loggedInUser = await login({
           email: data.email,
           password: data.password,
         });
 
-        if (user.role === "admin") {
+        if (loggedInUser.role === "admin") {
           navigate("/admin");
         } else {
           navigate("/ques");
